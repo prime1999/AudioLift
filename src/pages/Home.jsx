@@ -1,6 +1,5 @@
 import { easeInOut, motion } from "framer-motion";
 import { MdHeadphonesBattery } from "react-icons/md";
-import NavBar from "../components/NavBar";
 import {
 	headphone,
 	listen,
@@ -13,7 +12,6 @@ import {
 const Home = () => {
 	return (
 		<>
-			<NavBar />
 			<section className="mt-24">
 				<div className="flex justify-between w-10/12 mx-auto mt-12 gap-4">
 					<div className="w-1/3">

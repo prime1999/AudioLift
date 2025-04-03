@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
 	return (
@@ -12,7 +13,7 @@ const NavBar = () => {
 						Get-Audio
 					</li>
 					<li className="mr-8 cursor-pointer font-semibold duration-500 hover:text-yellow-500">
-						See-Files
+						<NavLink to="/extract">Extract-Audio</NavLink>
 					</li>
 				</ul>
 			</div>
