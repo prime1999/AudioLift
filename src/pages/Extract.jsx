@@ -114,7 +114,13 @@ const Extract = () => {
 						className="relative w-[300px] h-[150px] px-4 md:px-2 lg:px-0"
 						whileHover="hover"
 					>
-						<video src={videoURL} width="300" height="150" controls />
+						<video
+							src={videoURL}
+							width="300"
+							height="150"
+							controls
+							className="w-[300px] h-[150px] object-cover"
+						/>
 						<motion.span
 							className="absolute top-20 -right-10 bg-yellow-600 font-inter text-xs text-white px-2 py-1 rounded-full"
 							initial={{ y: -10, opacity: 0 }}
