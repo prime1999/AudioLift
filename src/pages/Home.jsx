@@ -10,6 +10,7 @@ import {
 	mediumScreen,
 } from "../lib/imageExport";
 import ImageForMobileHome from "../components/ImageForMobileHome";
+import { NavLink } from "react-router-dom";
 
 const Home = () => {
 	return (
@@ -50,9 +51,12 @@ const Home = () => {
 									},
 								}}
 							/>
-							<span className="relative z-10 text-sm font-semibold">
+							<NavLink
+								to="/extract"
+								className="relative z-10 text-sm font-semibold"
+							>
 								Start for Free
-							</span>
+							</NavLink>
 						</motion.button>
 						<div className="hidden md:block md:mt-4 lg:hidden">
 							<ImageForMobileHome />

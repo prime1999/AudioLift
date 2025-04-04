@@ -4,9 +4,9 @@ import { NavLink } from "react-router-dom";
 const NavBar = () => {
 	return (
 		<nav className="hidden w-11/12 mx-auto mt-2 justify-between items-center font-inter text-sm md:flex">
-			<h1 className="font-main font-bold text-3xl">
+			<NavLink to="/" className="font-main font-bold text-3xl">
 				AUDIO<span className="text-yellow-500">LIFT</span>
-			</h1>
+			</NavLink>
 			<div>
 				<ul className="flex justify-center items-center">
 					<li className="mr-8 cursor-pointer font-semibold duration-500 hover:text-yellow-500">
