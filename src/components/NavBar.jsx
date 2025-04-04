@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
 	return (
-		<nav className="w-11/12 mx-auto mt-2 flex justify-between items-center font-inter text-sm">
+		<nav className="hidden w-11/12 mx-auto mt-2 justify-between items-center font-inter text-sm md:flex">
 			<h1 className="font-main font-bold text-3xl">
 				AUDIO<span className="text-yellow-500">LIFT</span>
 			</h1>

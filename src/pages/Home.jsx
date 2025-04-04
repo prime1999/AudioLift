@@ -7,16 +7,18 @@ import {
 	mainCard,
 	mainPortrait,
 	music,
+	mediumScreen,
 } from "../lib/imageExport";
+import ImageForMobileHome from "../components/ImageForMobileHome";
 
 const Home = () => {
 	return (
 		<>
 			<section className="mt-24">
-				<div className="flex justify-between w-10/12 mx-auto mt-12 gap-4">
-					<div className="w-1/3">
+				<div className="flex flex-col justify-between w-10/12 mx-auto mt-12 gap-4 md:flex-row">
+					<div className="w-11/12 lg:w-1/3">
 						<p className="font-inter font-semibold text-gray-600">With</p>
-						<h1 className="font-main font-bold text-6xl mb-8">
+						<h1 className="font-main font-bold text-5xl mb-8 lg:text-6xl">
 							AUDIO<span className="text-yellow-500">-LIFT</span>
 						</h1>
 						<hr className="border-gray-400" />
@@ -35,7 +37,7 @@ const Home = () => {
 						</span>
 						<hr className="border-gray-400" />
 						<motion.button
-							className="relative bg-yellow-500 py-2 px-4 mt-12 rounded-3xl overflow-hidden"
+							className="relative bg-yellow-500 py-2 px-4 mt-4 rounded-3xl overflow-hidden lg:mt-12"
 							whileHover="hover"
 						>
 							<motion.span
@@ -52,12 +54,15 @@ const Home = () => {
 								Start for Free
 							</span>
 						</motion.button>
+						<div className="hidden md:block md:mt-4 lg:hidden">
+							<ImageForMobileHome />
+						</div>
 					</div>
-					<div className="w-2/3 h-[400px] flex justify-end">
+					<div className="hidden w-2/3 h-[400px] justify-end md:flex">
 						<div>
 							<div className="flex gap-4">
 								<motion.div
-									className="bg-slate-100 p-4 mr-2 w-[200px] h-[200px] rounded-lg"
+									className="bg-slate-100 p-4 mr-2 w-[200px] h-[200px] rounded-lg hidden lg:block"
 									initial={{ y: 100, opacity: 0 }}
 									animate={{ y: 0, opacity: 1 }}
 									transition={{ duration: 2, ease: easeInOut }}
@@ -97,7 +102,7 @@ const Home = () => {
 										<p>extracting...</p>
 									</motion.div>
 									<motion.div
-										className="absolute -right-10 top-20 rounded-[100%] p-1 bg-slate-100"
+										className="absolute -right-10 top-20 rounded-[100%] p-1 bg-slate-100 hidden lg:block"
 										initial={{ x: 100, y: 200, opacity: 0 }}
 										animate={{ x: 0, y: 0, opacity: 1 }}
 										transition={{ duration: 2, ease: easeInOut }}
@@ -109,19 +114,19 @@ const Home = () => {
 										/>
 									</motion.div>
 									<motion.div
-										className="absolute -right-10 top-10 rounded-[100%] p-1 bg-slate-100"
+										className="absolute -right-10 top-10 rounded-[100%] p-1 bg-slate-100 hidden lg:block"
 										initial={{ x: 100, y: -100, opacity: 0 }}
 										animate={{ x: 0, y: 0, opacity: 1 }}
 										transition={{ duration: 2, ease: easeInOut }}
 									>
 										<img
 											src={headphone}
-											alt=""
+											alt="headphone image"
 											className="w-[40px] h-[40px] rounded-[100%]"
 										/>
 									</motion.div>
 									<motion.div
-										className="absolute -left-10 bottom-10 rounded-[100%] p-1 bg-slate-100"
+										className="absolute -left-10 bottom-10 rounded-[100%] p-1 bg-slate-100 hidden lg:block"
 										initial={{ opacity: 0 }}
 										animate={{ opacity: 1 }}
 										transition={{ duration: 2, ease: easeInOut, delay: 1 }}
@@ -136,6 +141,12 @@ const Home = () => {
 							</div>
 						</div>
 					</div>
+					<div className="md:hidden">
+						<ImageForMobileHome />
+					</div>
+				</div>
+				<div className="hidden md:block lg:hidden">
+					<img src={mediumScreen} alt="" />
 				</div>
 			</section>
 		</>

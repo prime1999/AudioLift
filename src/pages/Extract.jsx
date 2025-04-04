@@ -97,20 +97,21 @@ const Extract = () => {
 		console.log("FFmpeg process aborted");
 	};
 
+	// function to remove the audio aborted
 	const handleFileRemoval = () => {
 		setIsAborted(false);
 		setProgress(0);
 		setShowAudioExtraction(false);
 	};
 	return (
-		<section className="flex flex-col items-center justify-center w-1/2 mx-auto mt-4">
+		<section className="flex flex-col items-center justify-center w-11/12 mx-auto mt-8 md:w-9/12 md:mt-16 lg:w-1/2 lg:mt-4">
 			<div
 				{...getRootProps()}
 				className="w-11/12 mx-auto flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-600 p-4 cursor-pointer"
 			>
 				{uploaded ? (
 					<motion.div
-						className="relative w-[300px] h-[150px]"
+						className="relative w-[300px] h-[150px] px-4 md:px-2 lg:px-0"
 						whileHover="hover"
 					>
 						<video src={videoURL} width="300" height="150" controls />
@@ -135,7 +136,7 @@ const Extract = () => {
 			{uploaded && (
 				<motion.button
 					onClick={() => handleFileExtraction(uploaded)}
-					className="relative bg-yellow-500 py-2 px-4 mt-2 text-white rounded-lg overflow-hidden"
+					className="relative bg-yellow-500 py-2 px-4 mt-8 text-white rounded-lg overflow-hidden lg:mt-2"
 					whileHover="hover"
 				>
 					<motion.span
@@ -156,7 +157,7 @@ const Extract = () => {
 			<AnimatePresence>
 				{showAudioExtraction && (
 					<motion.div
-						className="mt-2 font-inter"
+						className="mt-2 font-inter w-11/12 mx-auto"
 						initial={{ x: -100, opacity: 0 }}
 						animate={{ x: 0, opacity: 1 }}
 						transition={{ duration: 0.5, ease: easeInOut }}
@@ -165,7 +166,7 @@ const Extract = () => {
 						<h6 className="mb-2 text-sm font-semibold">
 							{progress < 100 ? "Extracting..." : "Audio Extracted"}
 						</h6>
-						<div className="flex items-center gap-2 p-4 bg-yellow-50 rounded-xl">
+						<div className="w-full flex items-center gap-2 p-4 bg-yellow-50 rounded-xl">
 							<FaRegFileAudio className="text-3xl mb-2" />
 							<div>
 								<div className="flex justify-between items-center gap-2 mb-2">
@@ -204,7 +205,7 @@ const Extract = () => {
 									)}
 								</div>
 								<div className="flex items-center gap-4">
-									<div className="h-2 w-[500px] rounded-full bg-yellow-100">
+									<div className="h-2 w-[200px] rounded-full bg-yellow-100 md:w-[450px] lg:w-[500px]">
 										<motion.div
 											className="bg-yellow-600 h-full rounded-full"
 											style={{ width: `${progress}%` }}
