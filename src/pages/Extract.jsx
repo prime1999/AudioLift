@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { FaFileArrowUp, FaRegFileAudio } from "react-icons/fa6";
+import { AnimatePresence, easeInOut, motion } from "framer-motion";
+import { FaFileArrowUp, FaRegFileAudio, FaTrash } from "react-icons/fa6";
 import { GrDocumentSound } from "react-icons/gr";
 import { MdDownloadForOffline } from "react-icons/md";
 import { useDropzone } from "react-dropzone";
@@ -11,12 +11,12 @@ const ffmpeg = new FFmpeg({ log: true });
 
 const Extract = () => {
 	const baseURL = "/ffmpeg/";
-	const controllerRef = useRef(null);
 	const [isAborted, setIsAborted] = useState(false);
 	const [videoURL, setVideoURL] = useState("");
 	const [progress, setProgress] = useState(0);
 	const [uploaded, setUploaded] = useState(null);
 	const [audioUrl, setAudioUrl] = useState("");
+	const [showAudioExtraction, setShowAudioExtraction] = useState(false);
 	// for the file drop using dropzone
 	const { getInputProps, getRootProps } = useDropzone({
 		accept: "video/*",
@@ -44,6 +44,8 @@ const Extract = () => {
 	// function to extract the audio file
 	const handleFileExtraction = async (videoFile) => {
 		try {
+			setIsAborted(false);
+			setShowAudioExtraction(true);
 			ffmpeg.on("log", ({ message }) => {
 				console.log("[FFmpeg]", message);
 			});
@@ -62,11 +64,6 @@ const Extract = () => {
 			ffmpeg.on("progress", (ratio) => {
 				setProgress(Math.round(ratio.progress * 100));
 			});
-
-			if (isAborted) {
-				console.log("Extraction was aborted.");
-				return;
-			}
 
 			// Determine output format
 			const outputFile = "output.mp3";
@@ -94,11 +91,16 @@ const Extract = () => {
 
 	// function to cansel the extraction
 	const handleCancel = () => {
-		console.log(ffmpeg);
-		setIsAborted(true); // Set abort flag to true
-		ffmpeg.terminate("input.mp4"); // Optionally clean up
-		ffmpeg.terminate("output.mp3"); // Optionally clean up
+		setIsAborted(true);
+		ffmpeg.terminate("input.mp4");
+		ffmpeg.terminate("output.mp3");
 		console.log("FFmpeg process aborted");
+	};
+
+	const handleFileRemoval = () => {
+		setIsAborted(false);
+		setProgress(0);
+		setShowAudioExtraction(false);
 	};
 	return (
 		<section className="flex flex-col items-center justify-center w-1/2 mx-auto mt-4">
@@ -151,57 +153,75 @@ const Extract = () => {
 					</span>
 				</motion.button>
 			)}
-			{uploaded && (
-				<div className="mt-2 font-inter">
-					<h6 className="mb-2 text-sm font-semibold">
-						{progress < 100 ? "Extracting..." : "Audio Extracted"}
-					</h6>
-					<div className="flex items-center gap-2 p-4 bg-yellow-50 rounded-xl">
-						<FaRegFileAudio className="text-3xl mb-2" />
-						<div>
-							<div className="flex justify-between items-center gap-2 mb-2">
-								<p className="font-inter text-xs font-semibold">
-									{uploaded.name}
-								</p>
+			<AnimatePresence>
+				{showAudioExtraction && (
+					<motion.div
+						className="mt-2 font-inter"
+						initial={{ x: -100, opacity: 0 }}
+						animate={{ x: 0, opacity: 1 }}
+						transition={{ duration: 0.5, ease: easeInOut }}
+						exit={{ x: -100, opacity: 0 }}
+					>
+						<h6 className="mb-2 text-sm font-semibold">
+							{progress < 100 ? "Extracting..." : "Audio Extracted"}
+						</h6>
+						<div className="flex items-center gap-2 p-4 bg-yellow-50 rounded-xl">
+							<FaRegFileAudio className="text-3xl mb-2" />
+							<div>
+								<div className="flex justify-between items-center gap-2 mb-2">
+									<p className="font-inter text-xs font-semibold">
+										{uploaded.name}
+									</p>
 
-								{progress < 100 ? (
-									<button
-										onClick={() => handleCancel()}
-										className="w-6 h-6 flex justify-center items-center rounded-[100%] text-xs font-inter font-semibold border border-gray-500 p-2"
-									>
-										X
-									</button>
-								) : (
-									<button
-										onClick={() => {
-											const a = document.createElement("a");
-											a.href = audioUrl;
-											a.download = "extracted_audio.mp3";
-											document.body.appendChild(a);
-											a.click();
-											document.body.removeChild(a);
-										}}
-									>
-										<MdDownloadForOffline className="text-2xl" />
-									</button>
-								)}
-							</div>
-							<div className="flex items-center gap-4">
-								<div className="h-2 w-[500px] rounded-full bg-yellow-100">
-									<motion.div
-										className="bg-yellow-600 h-full rounded-full"
-										style={{ width: `${progress}%` }}
-										initial={{ width: 0 }}
-										animate={{ width: `${progress}%` }}
-										transition={{ duration: 0.5, ease: "easeInOut" }}
-									/>
+									{progress < 100 ? (
+										<>
+											{!isAborted ? (
+												<button
+													onClick={() => handleCancel()}
+													className="w-6 h-6 flex justify-center items-center rounded-[100%] text-xs font-inter font-semibold border border-gray-500 p-2"
+												>
+													X
+												</button>
+											) : (
+												<button onClick={() => handleFileRemoval()}>
+													<FaTrash className="text-md text-red-500" />
+												</button>
+											)}
+										</>
+									) : (
+										<button
+											onClick={() => {
+												const a = document.createElement("a");
+												a.href = audioUrl;
+												a.download = "extracted_audio.mp3";
+												document.body.appendChild(a);
+												a.click();
+												document.body.removeChild(a);
+											}}
+										>
+											<MdDownloadForOffline className="text-2xl" />
+										</button>
+									)}
 								</div>
-								<p className="text-xs font-inter font-semibold">{progress}%</p>
+								<div className="flex items-center gap-4">
+									<div className="h-2 w-[500px] rounded-full bg-yellow-100">
+										<motion.div
+											className="bg-yellow-600 h-full rounded-full"
+											style={{ width: `${progress}%` }}
+											initial={{ width: 0 }}
+											animate={{ width: `${progress}%` }}
+											transition={{ duration: 0.5, ease: "easeInOut" }}
+										/>
+									</div>
+									<p className="text-xs font-inter font-semibold">
+										{progress}%
+									</p>
+								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-			)}
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</section>
 	);
 };
